@@ -1,0 +1,46 @@
+﻿using UnityEngine;
+
+namespace Toolbox
+{
+    /// <summary>
+    /// Base class for deriving core Game class that performs any vital intialization
+    /// and setup functionalities throughout the lifetime of the game.
+    /// </summary>
+    /// <remarks>
+    /// The AutoAwake() method will invoke a buffered/pending GameInitialized message.
+    /// </remarks>
+    public abstract class GameCore
+    {
+        GameInitializedEvent BufferedMsg;
+        
+
+        /// <summary>
+        /// Make sure this is called at the end of your overriden 'Start' method!
+        /// </summary>
+        protected virtual void AutoAwake()
+        {
+            BufferedMsg = new GameInitializedEvent();
+            GlobalMessagePump.Instance.PostMessage(BufferedMsg);
+        }
+
+        /// <summary>
+        /// For the love of God do not forget to call the base method if you override!
+        /// </summary>
+        protected virtual void AutoDestroy()
+        {
+            if (Application.isPlaying)
+            {
+                //for some reason, this message can be null by this point?
+                if(BufferedMsg != null) GlobalMessagePump.Instance.RemoveBufferedMessage(BufferedMsg);
+                GlobalMessagePump.Instance.PostMessage(new GameShuttingdownEvent());
+            }
+        }
+
+    }
+}
+
+namespace Toolbox
+{
+    public class GameInitializedEvent : IBufferedMessage, IDeferredMessage { }
+    public class GameShuttingdownEvent : IMessageEvent { }
+}

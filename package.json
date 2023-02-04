@@ -1,0 +1,34 @@
+{
+  "name": "com.postegames.toolboxcorelib",
+  "version": "1.0.0",
+  "displayName": "PEGLIB - Toolbox Core Lib",
+  "description": "Core library for toolbox system and higher-level game constructs.",
+  "unity": "2022.2",
+  "keywords": [
+    "toolbox",
+    "core",
+    "util",
+    "utility",
+    "library"
+  ],
+  "author": {
+    "name": "Sluggy",
+    "email": "jcsluggy@gmail.com",
+    "url": "http:/postegames.com"
+  },
+  "dependencies": {
+    "com.fullinspector.rotorzlib": "",
+    "com.postegames.autocreatable": "",
+    "com.postegames.autonomousentities": "",
+    "com.postegames.collections": "",
+    "com.postegames.eventbehaviourframework": "",
+    "com.postegames.hashedstring": "",
+    "com.postegames.lazarus": "",
+    "com.postegames.mathutils": "",
+    "com.postegames.messagebehaviourframework": "",
+    "com.postegames.messagedispatcher": "",
+    "com.postegames.sharedenums": "",
+    "com.postegames.typehelper": "",
+    "com.postegames.unityextensions": ""
+  }
+}
