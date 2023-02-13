@@ -17,7 +17,7 @@ namespace Toolbox
         /// <summary>
         /// Make sure this is called at the end of your overriden 'Start' method!
         /// </summary>
-        protected virtual void AutoAwake()
+        protected virtual void AutoStart()
         {
             BufferedMsg = new GameInitializedEvent();
             GlobalMessagePump.Instance.PostMessage(BufferedMsg);
