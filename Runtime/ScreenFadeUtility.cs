@@ -8,6 +8,8 @@ namespace Toolbox
 {
     /// <summary>
     /// Utility class for autonomously handling a screen color fade.
+    /// 
+    /// TODO: Auto instantiation disabled pending review. 
     /// </summary>
     public class ScreenFadeUtility : MonoBehaviour
     {
@@ -40,14 +42,15 @@ namespace Toolbox
                 if (_Instance == null)
                 {
                     var go = Camera.main;
-                    _Instance = go.gameObject.AddComponent<ScreenFadeUtility>();
+                    if(go != null)
+                        _Instance = go.gameObject.AddComponent<ScreenFadeUtility>();
                 }
 
                 return _Instance;
             }
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void CreateInstance()
         {
             if (_Instance == null)
@@ -76,11 +79,13 @@ namespace Toolbox
 
         public void FadeTo(Color color, float time, bool hold, Action completedCallback, Action frameCallback)
         {
+            throw new UnityException("Disabled. Needs review.");
             StartCoroutine(CoroutineFadeTo(color, time, hold, completedCallback, frameCallback));
         }
 
         public void FadeFrom(Color color, float time, Action completedCallback, Action frameCallback)
         {
+            throw new UnityException("Disabled. Needs review.");
             StartCoroutine(CoroutineFadeFrom(color, time, completedCallback, frameCallback));
         }
 
