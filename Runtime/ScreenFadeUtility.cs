@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Toolbox.AutoCreate;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 namespace Toolbox
 {
     /// <summary>
     /// Utility class for autonomously handling a screen color fade.
-    /// 
-    /// TODO: Auto instantiation disabled pending review. 
     /// </summary>
-    public class ScreenFadeUtility : MonoBehaviour
+    [AutoCreate(CreationTime=RuntimeInitializeLoadType.AfterSceneLoad)]
+    public class ScreenFadeUtility
     {
         Color CachedColor = Color.black;
         Texture2D CachedTex;
         float Alpha = 0;
         bool Fading;
-        //Dictionary<Color, Texture2D> FadeTexs = new Dictionary<Color, Texture2D>();
         Texture2D WhiteTexture;
 
         Texture2D Texture
@@ -35,39 +35,18 @@ namespace Toolbox
         }
 
         static ScreenFadeUtility _Instance;
-        public static ScreenFadeUtility Instance
-        {
-            get
-            {
-                if (_Instance == null)
-                {
-                    var go = Camera.main;
-                    if(go != null)
-                        _Instance = go.gameObject.AddComponent<ScreenFadeUtility>();
-                }
+        public static ScreenFadeUtility Instance => _Instance;
 
-                return _Instance;
-            }
-        }
-
-        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        static void CreateInstance()
+        void AutoAwake()
         {
-            if (_Instance == null)
-            {
-                var go = Camera.main;
-                _Instance = go.gameObject.AddComponent<ScreenFadeUtility>();
-                var temp = _Instance.Texture; //init the texture now
-            }
-        }
-
-        private void Awake()
-        {
+            //we are using Start instead of Awake because the global coroutine object needs to initialize first in awake
             _Instance = this;
+            RenderPipelineManager.endContextRendering += HandleRenderFrame;
         }
 
-        private void OnDestroy()
+        void AutoDestroy()
         {
+            RenderPipelineManager.endContextRendering -= HandleRenderFrame;
             _Instance = null;
         }
 
@@ -79,14 +58,12 @@ namespace Toolbox
 
         public void FadeTo(Color color, float time, bool hold, Action completedCallback, Action frameCallback)
         {
-            throw new UnityException("Disabled. Needs review.");
-            StartCoroutine(CoroutineFadeTo(color, time, hold, completedCallback, frameCallback));
+            GlobalCoroutine.Start(CoroutineFadeTo(color, time, hold, completedCallback, frameCallback));
         }
 
         public void FadeFrom(Color color, float time, Action completedCallback, Action frameCallback)
         {
-            throw new UnityException("Disabled. Needs review.");
-            StartCoroutine(CoroutineFadeFrom(color, time, completedCallback, frameCallback));
+            GlobalCoroutine.Start(CoroutineFadeFrom(color, time, completedCallback, frameCallback));
         }
 
         IEnumerator CoroutineFadeFrom(Color targetColor, float time, Action completedCallback, Action frameCallback)
@@ -127,9 +104,8 @@ namespace Toolbox
             Render(Alpha);
         }
 
-        private IEnumerator OnPostRender()
+        void HandleRenderFrame(ScriptableRenderContext context, List<Camera> cams)
         {
-            yield return CoroutineWaitFactory.EndOfFrame;
             if (Alpha > 0)
                 Render(Alpha);
         }
@@ -139,8 +115,11 @@ namespace Toolbox
             //Unity 2018.3 changed the rules on us so now we need to set a custom matrix in order for the
             //motherfuker to *actually* rendering in screen pixel space. Godamn motherfucker fuckers!
             //Always fuckin' motherfuckers!
+            //Looks like the rules changed again in URP. Now we need a fucking' motherfucking ortho matrix.
+            //God-damnit godamnit!
             GL.PushMatrix();
-            GL.LoadPixelMatrix();
+            GL.LoadOrtho();
+            //GL.LoadPixelMatrix();
             UnityEngine.Graphics.DrawTexture(
                     new Rect(0,0, Screen.width, Screen.height),
                     CachedTex,
