@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System;
-using Toolbox.Messaging;
+using Peg.Messaging;
 
-namespace Toolbox
+namespace Peg.Lib
 {
     /// <summary>
     /// This component can be used to listen for demands made of common Unity components.

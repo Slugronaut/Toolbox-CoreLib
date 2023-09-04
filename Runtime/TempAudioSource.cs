@@ -1,10 +1,10 @@
 ﻿using System;
-using Toolbox.AutoCreate;
-using Toolbox.Lazarus;
+using Peg.AutoCreate;
+using Peg.Lazarus;
 using UnityEngine;
 
 
-namespace Toolbox.Behaviours
+namespace Peg.Behaviours
 {
     /// <summary>
     /// Attached to a temporary sound. Will remove itself after sound has finished playing.

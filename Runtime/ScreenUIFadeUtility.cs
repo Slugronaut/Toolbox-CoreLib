@@ -1,14 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Toolbox.AutoCreate;
+using Peg.AutoCreate;
 using UnityEngine;
-using UnityEngine.Device;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.Port;
 
-namespace Toolbox
+namespace Peg.Systems
 {
     /// <summary>
     /// Utility class for autonomously handling a screen color fade.

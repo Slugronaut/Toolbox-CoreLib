@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
-using Toolbox.AutoCreate;
-using Toolbox.Lazarus;
+using Peg.AutoCreate;
+using Peg.Lazarus;
 
-namespace Toolbox.Behaviours
+namespace Peg.Behaviours
 {
     /// <summary>
     /// Destroys the attached particlesystem upon finishing.

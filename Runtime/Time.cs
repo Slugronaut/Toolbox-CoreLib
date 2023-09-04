@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Toolbox
+namespace Peg.Lib
 {
     public static class TimeUtil
     {
@@ -12,7 +11,7 @@ namespace Toolbox
         {
             get
             {
-                double time = Time.realtimeSinceStartup;
+                double time = Time.realtimeSinceStartupAsDouble;
                 #if UNITY_EDITOR
                 if (!Application.isPlaying)
                     time = UnityEditor.EditorApplication.timeSinceStartup;
@@ -21,39 +20,5 @@ namespace Toolbox
             }
         }
     }
-
-    /// <summary>
-    /// Note: This uses a really bad method of summing time and does not accurately reflect error.
-    /// TODO: Fixing this with proper error correction!!!
-    /// </summary>
-    public static class CoroutineUtilities
-    {
-        public static IEnumerator WaitForRealTime(float delay)
-        {
-            while (true)
-            {
-                float pauseEndTime = Time.realtimeSinceStartup + delay; //BUG! FIXME!
-                while (Time.realtimeSinceStartup < pauseEndTime)
-                {
-                    yield return 0;
-                }
-                break;
-            }
-        }
-
-        public static IEnumerator WaitForTime(float delay)
-        {
-            while (true)
-            {
-                float pauseEndTime = Time.timeSinceLevelLoad + delay; //BUG! FIXME!
-                while (Time.timeSinceLevelLoad < pauseEndTime)
-                {
-                    yield return 0;
-                }
-                break;
-            }
-        }
-    }
-
 
 }

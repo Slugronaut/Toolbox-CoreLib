@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using System;
-using Toolbox.AutoCreate;
-using Toolbox.Collections;
-using Toolbox.Lazarus;
+using Peg.AutoCreate;
+using Peg.Util;
+using Peg.Lazarus;
 
-namespace Toolbox.Behaviours
+namespace Peg.Behaviours
 {
     /// <summary>
     /// Global singleton used to play one-shot audio clips at specific world positions.
@@ -38,8 +38,9 @@ namespace Toolbox.Behaviours
         List<GameObject> Prefabs;
         bool BugFix;
 
-        void AutoAwake()
+        void AutoStart()
         {
+            AutoCreator.Resolve(this);
             Instance = this;
             RefreshSourceList();
 
@@ -377,6 +378,7 @@ namespace Toolbox.Behaviours
             {
                 for (int i = 0; i < SoundCategories.Count; i++)
                 {
+                    //Debug.Log($"SoundFX Prefab: {SoundCategories[i].Id.Value}");
                     var res = Resources.Load<GameObject>(SoundCategories[i].Id.Value);
                     if (res != null) Prefabs.Add(res);
                 }

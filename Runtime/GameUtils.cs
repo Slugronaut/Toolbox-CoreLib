@@ -1,11 +1,11 @@
 ﻿using System;
-using Toolbox.AutoCreate;
-using Toolbox.Collections;
-using Toolbox.Lazarus;
+using Peg.AutoCreate;
+using Peg.Util;
+using Peg.Lazarus;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Toolbox
+namespace Peg.Lib
 {
     /// <summary>
     /// General-purpose utility methods that don't belong to any specific object.
@@ -41,7 +41,7 @@ namespace Toolbox
         {
             if (Physics.Raycast(new Ray(start, dir), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
-                endPos = hit.point + (hit.normal.normalized * offset);
+                endPos = hit.point + hit.normal.normalized * offset;
                 normal = hit.normal;
                 return true;
             }
@@ -64,21 +64,21 @@ namespace Toolbox
         [Obsolete("This method now exists within the Vector3 class natively.")]
         public static bool ProjectToSurface(Vector3 start, Vector3 dir, float dist, float offset, LayerMask layers, out Vector3 endPos, out Quaternion rot)
         {
-            if(Physics.Raycast(new Ray(start, dir), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(new Ray(start, dir), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
-                endPos = hit.point + (hit.normal.normalized * offset);
+                endPos = hit.point + hit.normal.normalized * offset;
                 rot = Quaternion.LookRotation(hit.normal);
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 Debug.DrawLine(start, endPos, Color.green);
-                #endif
+#endif
                 return true;
             }
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             else
             {
                 Debug.DrawRay(start, dir * dist, Color.red);
             }
-            #endif
+#endif
             endPos = Vector3.zero;
             rot = Quaternion.identity;
             return false;
@@ -103,9 +103,9 @@ namespace Toolbox
             int count = Physics.RaycastNonAlloc(new Ray(start, dir), hits, dist, layers, QueryTriggerInteraction.Ignore);
             if (count > 0)
             {
-                int index = Math.MathUtils.GetIndexOfClosest(count, hits, start);
+                int index = MathUtils.GetIndexOfClosest(count, hits, start);
                 var hit = hits[index];
-                endPos = hit.point + (hit.normal.normalized * offset);
+                endPos = hit.point + hit.normal.normalized * offset;
                 rot = Quaternion.LookRotation(-hit.normal);
                 return true;
             }
@@ -128,9 +128,9 @@ namespace Toolbox
         [Obsolete("This method now exists within the Vector3 class natively.")]
         public static bool ProjectToSurface(Vector3 start, Vector3 dir, float dist, float radius, float offset, LayerMask layers, out Vector3 endPos, out Quaternion rot)
         {
-            if(Physics.SphereCast(new Ray(start, dir), radius, out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(new Ray(start, dir), radius, out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
-                endPos = hit.point + (hit.normal.normalized * offset);
+                endPos = hit.point + hit.normal.normalized * offset;
                 rot = Quaternion.LookRotation(hit.normal);
                 return true;
             }
@@ -151,11 +151,11 @@ namespace Toolbox
         /// <returns></returns>
         public static Transform SpawnRecycledDecal(GameObject prefab, Vector3 position, Vector3 direction, float offset, float dist, LayerMask layers)
         {
-            if(Physics.Raycast(new Ray(position, direction), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
                 var go = Lazarus.RecycleSummon(prefab, hit.point);
                 var trans = go.transform;
-                Vector3 point = hit.point + (hit.normal.normalized * offset);
+                Vector3 point = hit.point + hit.normal.normalized * offset;
                 PositionObject(trans, point, Quaternion.LookRotation(-hit.normal), Random.Range(0, 360));
                 return trans;
             }
@@ -177,7 +177,7 @@ namespace Toolbox
         {
             if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
-                var go = Lazarus.RecycleSummon(prefab, hit.point + (hit.normal.normalized * offset));
+                var go = Lazarus.RecycleSummon(prefab, hit.point + hit.normal.normalized * offset);
                 return go.transform;
             }
             return null;
@@ -201,7 +201,7 @@ namespace Toolbox
             {
                 var go = Lazarus.Summon(prefab, hit.point);
                 var trans = go.transform;
-                Vector3 point = hit.point + (hit.normal.normalized * offset);
+                Vector3 point = hit.point + hit.normal.normalized * offset;
                 PositionObject(trans, point, Quaternion.LookRotation(-hit.normal), Random.Range(0, 360));
                 return trans;
             }
@@ -223,7 +223,7 @@ namespace Toolbox
             if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
                 Debug.DrawLine(position, hit.point, Color.red, 3);
-                var go = Lazarus.Summon(prefab, hit.point + (hit.normal.normalized * offset));
+                var go = Lazarus.Summon(prefab, hit.point + hit.normal.normalized * offset);
                 return go.transform;
             }
             else Debug.DrawRay(position, direction * dist, Color.yellow, 3);
@@ -244,9 +244,9 @@ namespace Toolbox
         {
             if (Physics.Raycast(new Ray(position, direction), out RaycastHit hit, dist, layers, QueryTriggerInteraction.Ignore))
             {
-                var go = GameObject.Instantiate(prefab, hit.point, Quaternion.identity);
+                var go = UnityEngine.Object.Instantiate(prefab, hit.point, Quaternion.identity);
                 var trans = go.transform;
-                Vector3 point = hit.point + (hit.normal.normalized * offset);
+                Vector3 point = hit.point + hit.normal.normalized * offset;
                 PositionObject(trans, point, Quaternion.LookRotation(-hit.normal), Random.Range(0, 360));
                 return trans;
             }

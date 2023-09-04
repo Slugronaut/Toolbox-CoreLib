@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Peg.AutoCreate;
+using UnityEngine;
 
-namespace Toolbox
+namespace Peg.Systems
 {
     /// <summary>
     /// Base class for deriving core Game class that performs any vital intialization
@@ -9,7 +10,8 @@ namespace Toolbox
     /// <remarks>
     /// The AutoAwake() method will invoke a buffered/pending GameInitialized message.
     /// </remarks>
-    public abstract class GameCore
+    [AutoCreate]
+    public class GameBootEvents
     {
         GameInitializedEvent BufferedMsg;
         
@@ -39,7 +41,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace Peg
 {
     public class GameInitializedEvent : IBufferedMessage, IDeferredMessage { }
     public class GameShuttingdownEvent : IMessageEvent { }

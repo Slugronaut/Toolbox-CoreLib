@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Toolbox.AutoCreate;
+using Peg.AutoCreate;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 
-namespace Toolbox
+namespace Peg.Systems
 {
     /// <summary>
     /// Utility class for autonomously handling a screen color fade.
