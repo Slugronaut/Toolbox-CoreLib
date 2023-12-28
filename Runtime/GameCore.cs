@@ -1,4 +1,5 @@
 ﻿using Peg.AutoCreate;
+using Peg.MessageDispatcher;
 using UnityEngine;
 
 namespace Peg.Systems
@@ -39,10 +40,8 @@ namespace Peg.Systems
         }
 
     }
-}
 
-namespace Peg
-{
+
     public class GameInitializedEvent : IBufferedMessage, IDeferredMessage { }
     public class GameShuttingdownEvent : IMessageEvent { }
 }
