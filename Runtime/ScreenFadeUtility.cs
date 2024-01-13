@@ -11,6 +11,7 @@ namespace Peg.Systems
     /// <summary>
     /// Utility class for autonomously handling a screen color fade.
     /// </summary>
+    [Obsolete("Prefer ScreenUIFadeUtility when possible. It requires the use of the new UIToolkit but is much better suited to the task.")]
     [AutoCreate(CreationTime=RuntimeInitializeLoadType.AfterSceneLoad)]
     public class ScreenFadeUtility
     {

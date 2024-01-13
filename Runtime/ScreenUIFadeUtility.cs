@@ -27,9 +27,15 @@ namespace Peg.Systems
             //we are using Start instead of Awake because the global coroutine object needs to initialize first in awake
             _Instance = this;
             var go = new GameObject("Screen Fade");
-            go.hideFlags = HideFlags.DontSave;
-            //go.hideFlags = HideFlags.HideAndDontSave;
-            GameObject.DontDestroyOnLoad(go);
+
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+            {
+                go.hideFlags = HideFlags.DontSave;
+                //go.hideFlags = HideFlags.HideAndDontSave;
+                GameObject.DontDestroyOnLoad(go);
+            }
+#endif
 
             Doc = go.AddComponent<UIDocument>();
             Doc.visualTreeAsset = ScriptableObject.CreateInstance<VisualTreeAsset>();
@@ -53,7 +59,13 @@ namespace Peg.Systems
         void AutoDestroy()
         {
             _Instance = null;
+#if UNITY_EDITOR
+            if(Application.isPlaying)
+                GameObject.Destroy(Doc.gameObject);
+            else GameObject.DestroyImmediate(Doc.gameObject);
+#else
             GameObject.Destroy(Doc.gameObject);
+#endif
         }
 
         public void EndFadeout()
